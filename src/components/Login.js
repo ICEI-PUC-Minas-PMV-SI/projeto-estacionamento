@@ -40,6 +40,11 @@ function Login() {
           ></input>
 
 <a href="">Esqueci a senha</a>
+
+<p>Não possui conta?</p>
+
+<button id="meu-botao">Cadastrar</button>
+
         </form>
     
     </div>
