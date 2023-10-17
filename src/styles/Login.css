@@ -35,15 +35,15 @@
 
 
   .login input {
-    margin-top: 15px;
-    border-radius: 30px;
+    margin-top: 1%;
+    border-radius: 8vh;
     background: #FFF;
     border: none;
     width: 80%; 
-    max-width: 300px; 
-    height: 2em; 
+    max-width: 32%; 
+    height: 4vh; 
     text-align: center;
-    box-shadow:0px 6px 6px 0px rgba(0, 0, 0, 0.25);
+    box-shadow:0% 16% 16% 0% rgba(0, 0, 0, 0.25);
   }
   
   form {
@@ -54,8 +54,8 @@
   form [type="button"] {
     border-radius: 30px;
     background: #C76138;
-    box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.25);
-    padding: 5px; 
+    box-shadow: 0% 16% 16% 0% rgba(0, 0, 0, 0.25);
+    padding: 1%; 
     text-align: center;
 
   }
@@ -74,7 +74,7 @@
 
     display: flex;
     width: 80%; 
-    max-width: 300px;
+    max-width: 32%;
 
  
 }
@@ -98,13 +98,13 @@ p{
 
 button{
 
-  border-radius: 30px;
+  border-radius: 30vh;
   background: #C76138;
-  box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.25);
-  padding: 5px; 
+  box-shadow: 0% 6% 6% 0% rgba(0, 0, 0, 0.25);
+  padding: 1%; 
   text-align: center;
   width: 80%; 
-  max-width: 300px; 
+  max-width: 32%; 
   border: none;
   margin-top: 1%;
 }
