@@ -80,11 +80,10 @@
 }
 
 .imagemCarros{
-    width: 520px;
-    height: 720px;
-    margin-left: -100%;
-    margin-top:-10%;
-   float:right;
+    width: 40%;
+    height: 100vh;
+    margin-top: -5%;
+    float:right;
  
  
 }
