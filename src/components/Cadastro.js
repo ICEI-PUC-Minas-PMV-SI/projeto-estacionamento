@@ -24,7 +24,7 @@ function Cadastro() {
         
 
           <img className="imagemCarros" src={Carros} alt="Carros" />
-     <form className="login">
+     <form className="cadastro">
          
           
         <input
