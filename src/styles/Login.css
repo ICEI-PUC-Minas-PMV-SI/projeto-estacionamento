@@ -40,8 +40,7 @@
     background: #FFF;
     border: none;
     width: 80%; 
-    max-width: 32%; 
-    height: 4vh; 
+    max-width: 32%;  
     text-align: center;
     box-shadow:0px 6px 6px 0px rgba(0, 0, 0, 0.25);
   }
@@ -52,13 +51,17 @@
   }
   
   form [type="button"] {
-    border-radius: 30px;
+    border-radius: 30vh;
     background: #C76138;
-    box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0% 6px 6px 0% rgba(0, 0, 0, 0.25);
     padding: 1%; 
     text-align: center;
+    width: 80%; 
+    max-width: 32%; 
+    border: none;
+    margin-top: 1%;
+}
 
-  }
   
   a {
     color: #000;
