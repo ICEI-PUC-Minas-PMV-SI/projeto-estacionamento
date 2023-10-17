@@ -10,63 +10,68 @@
     font-family: Inter, sans-serif;
   }
   
-  .cadastro {
+  .redefinir {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-left: -55%; 
-    margin-top: 2%; 
+    margin-top: 5%; 
     
   }
-
   
-  .tituloCadastro {
+  .tituloRedefinir {
     color: #000;
-    margin-left: 25%; 
-    margin-top: 4%; 
-    font-size: 120%; 
-  }
-  
-
-  .options{
-
-    margin-top: 4%;
-    margin-left: 22%;
-    font-size: 80%;
+    margin-left: 0%; 
+    margin-top: 10%; 
+    font-size: 100%; 
   }
 
+  .tituloRedefinir2 {
+    color: #000;
+    margin-left: 0%; 
+    margin-top: 10%; 
+    font-size: 80%; 
+  }
 
-  .cadastro input {
-    margin-top: 2%;
+
+  .redefinir input[id="email"]{
+     
+    margin-top: 3%;
+
+
+  }
+
+
+
+  .redefinir input {
+    margin-top: 1%;
     border-radius: 8vh;
     background: #FFF;
     border: none;
     width: 80%; 
-    max-width: 32%; 
-    height: 4vh; 
+    max-width: 32%;  
     text-align: center;
     box-shadow:0px 6px 6px 0px rgba(0, 0, 0, 0.25);
   }
   
   form {
     text-align: center;
-    margin-top: -10%; 
+    margin-top: -5%; 
   }
   
   form [type="button"] {
-    border-radius: 30px;
+    border-radius: 30vh;
     background: #C76138;
-    box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0% 6px 6px 0% rgba(0, 0, 0, 0.25);
     padding: 1%; 
     text-align: center;
+    width: 80%; 
+    max-width: 32%; 
+    border: none;
+    margin-top: 1%;
+}
 
-  }
-  .cadastro input[id="nome"]{
-     
-    margin-top: 5%;
-
-
-  }
+  
   a {
     color: #000;
     margin-left: 0%; 
@@ -76,11 +81,20 @@
     text-decoration-line: underline;
   }
   
+  
+.imagemLogo1{
 
-.imagemCarros1{
+    display: flex;
+    width: 80%; 
+    max-width: 32%;
+
+ 
+}
+
+.imagemCarros2{
     width: 40%;
-    height: 102vh;
-    margin-top: -15%;
+    height: 100vh;
+    margin-top: -5%;
     float:right;
  
  
@@ -104,4 +118,5 @@ button{
   width: 80%; 
   max-width: 32%; 
   border: none;
-  margin-top: 1%;}
+  margin-top: 1%;
+}

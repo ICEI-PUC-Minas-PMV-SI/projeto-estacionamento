@@ -8,7 +8,7 @@ function Cadastro() {
 
         <div className="container">
 
-        <div className="titulo" >Cadastre-se</div>
+        <div className="tituloCadastro" >Cadastre-se</div>
 
 <div className="options">
     <div className="radio-container">
@@ -23,7 +23,7 @@ function Cadastro() {
 </div>
         
 
-          <img className="imagemCarros" src={Carros} alt="Carros" />
+     <img className="imagemCarros1" src={Carros} alt="Carros" />
      <form className="cadastro">
          
           
