@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Cadastro from './components/Cadastro';
 import Vagas from './components/Vagas';
 import RedefinirSenha from './components/RedefinirSenha';
+import Estacionamentos from './components/Estacionamentos';
 import ReservasProprietario from './components/ReservasProprietario';
 
 
@@ -13,11 +14,12 @@ function App() {
   return (
     <Router>
       <Routes>
-        <ReactRoute path="/"     element={<Login />} />
+        <ReactRoute path="/" element={<Login />} />
         <ReactRoute path="/redefinirsenha" element={<RedefinirSenha />} />
         <ReactRoute path="/cadastro" element={<Cadastro />} />
         <ReactRoute path="/vagas" element={<Vagas />} />
-        <ReactRoute path="/reservas-proprietario" element={<ReservasProprietario />}></ReactRoute>
+        <ReactRoute path="/estacionamentos" element={<Estacionamentos/>} />
+        <ReactRoute path="/reservas-proprietario" element={<ReservasProprietario />} />
       </Routes>
     </Router>
   );
