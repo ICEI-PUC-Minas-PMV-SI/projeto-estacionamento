@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Cadastro from './components/Cadastro';
 import Vagas from './components/Vagas';
 import RedefinirSenha from './components/RedefinirSenha';
+import Estacionamentos from './components/Estacionamentos';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <ReactRoute path="/redefinirsenha" element={<RedefinirSenha />} />
         <ReactRoute path="/cadastro" element={<Cadastro />} />
         <ReactRoute path="/vagas" element={<Vagas />} />
+        <ReactRoute path="/estacionamentos" element={<Estacionamentos/>} />
       </Routes>
     </Router>
   );
