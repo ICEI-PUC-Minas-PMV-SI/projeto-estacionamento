@@ -9,6 +9,7 @@ import RedefinirSenha from './components/RedefinirSenha';
 import Estacionamentos from './components/Estacionamentos';
 import ReservasProprietario from './components/ReservasProprietario';
 import ReservasCliente from './components/ReservasCliente';
+import CriarEstacionamento from './components/CriarEstacionamento';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <ReactRoute path="/estacionamentos" element={<Estacionamentos/>} />
         <ReactRoute path="/reservas-proprietario" element={<ReservasProprietario />} />
         <ReactRoute path="/reservas-cliente" element={<ReservasCliente />} />
+        <ReactRoute path="/estacionamento" element={<CriarEstacionamento />} />
       </Routes>
     </Router>
   );
