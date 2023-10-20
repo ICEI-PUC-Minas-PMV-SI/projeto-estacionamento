@@ -10,6 +10,7 @@ import Estacionamentos from './components/Estacionamentos';
 import ReservasProprietario from './components/ReservasProprietario';
 import ReservasCliente from './components/ReservasCliente';
 import CriarEstacionamento from './components/CriarEstacionamento';
+import Perfil from "./components/Perfil";
 
 
 function App() {
@@ -20,10 +21,13 @@ function App() {
         <ReactRoute path="/redefinirsenha" element={<RedefinirSenha />} />
         <ReactRoute path="/cadastro" element={<Cadastro />} />
         <ReactRoute path="/vagas" element={<Vagas />} />
-        <ReactRoute path="/estacionamentos" element={<Estacionamentos/>} />
-        <ReactRoute path="/reservas-proprietario" element={<ReservasProprietario />} />
+        <ReactRoute path="/estacionamentos" element={<Estacionamentos />} />
+        <ReactRoute
+          path="/reservas-proprietario"
+          element={<ReservasProprietario />} />
         <ReactRoute path="/reservas-cliente" element={<ReservasCliente />} />
         <ReactRoute path="/estacionamento" element={<CriarEstacionamento />} />
+        <ReactRoute path="/perfil" element={<Perfil />} />
       </Routes>
     </Router>
   );
