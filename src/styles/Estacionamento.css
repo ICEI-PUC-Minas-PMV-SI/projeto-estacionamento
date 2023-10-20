@@ -65,8 +65,7 @@
 }
 
 .nome-perfil::placeholder, .endereco-perfil::placeholder, .telefone-perfil::placeholder {
-    color: #0a0a0a;
-    font-weight: bold;
+    font-weight: 400;
 }
 
 .button-perfil {

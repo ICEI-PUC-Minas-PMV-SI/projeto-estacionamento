@@ -2,7 +2,7 @@ import React from "react";
 import "../styles/Perfil.css";
 import Logo from "../images/SmartPark-image-2.png";
 
-function Perfil() {
+function PerfilProprietario() {
   return (
       <div className="container-perfil">
         <div className="sidebar">
@@ -10,6 +10,7 @@ function Perfil() {
           <div className="sidebar-links">
             <a href="#">Perfil</a>
             <a href="#">Estacionamentos</a>
+            <a href="#">Vagas</a>
             <a href="#">Reservas</a>
           </div>
           <div className="logout">
@@ -49,19 +50,6 @@ function Perfil() {
                   placeholder="Senha"
                   id="senha"
                 />
-
-                <input className="user-modelo"
-                  type="text"
-                  name="modelo"
-                  placeholder="Modelo do Veículo"
-                  id="modelo"
-                />
-                <input className="user-placa"
-                  type="text"
-                  name="placa"
-                  placeholder="Placa do Veículo"
-                  id="placa"
-                />
             
               <div className="button-perfil">
                 <button className="editar-perfil">Editar</button>
@@ -74,4 +62,4 @@ function Perfil() {
   );
 }
 
-export default Perfil;
+export default PerfilProprietario;

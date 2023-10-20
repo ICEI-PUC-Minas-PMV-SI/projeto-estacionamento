@@ -61,7 +61,7 @@
 
 
 
-input#nome{
+.user-nome{
     border-radius: 0.2cm;
     border: none;
     width: 410px;
@@ -73,7 +73,7 @@ input#nome{
     font-weight: 400;
     line-height: normal;
 }
-input#telefone{
+.user-telefone{
     border-radius: 0.2cm;
     border: none;
     width: 133px;
@@ -86,7 +86,7 @@ input#telefone{
     line-height: normal;
 }
 
-input#endereco{
+.user-endereco{
     border-radius: 0.2cm;
     border: none;
     width: 260px;
@@ -98,7 +98,7 @@ input#endereco{
     font-weight: 400;
     line-height: normal;
 }
-input#email{
+.user-email{
     border-radius: 0.2cm;
     border: none;
     width: 260px;
@@ -110,7 +110,7 @@ input#email{
     font-weight: 400;
     line-height: normal;
 }
-input#senha{
+.user-senha{
     border-radius: 0.2cm;
     border: none;
     width: 133px;
@@ -122,7 +122,7 @@ input#senha{
     font-weight: 400;
     line-height: normal;
 }
-input#modelo{
+.user-modelo{
     border-radius: 0.2cm;
     border: none;
     width: 133px;
@@ -134,7 +134,7 @@ input#modelo{
     font-weight: 400;
     line-height: normal;
 }
-input#placa{
+.user-placa{
     border-radius: 0.2cm;
     border: none;
     width: 133px;
