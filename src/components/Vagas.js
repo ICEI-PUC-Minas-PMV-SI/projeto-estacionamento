@@ -10,6 +10,7 @@ function Vagas() {
                     <img className="imagemLogo" src={Logo} alt="Logo" />
                     <div className='sidebar-links'>
                         <a href='#'>Perfil</a>
+                        <a href='#'>Estacionamento</a>
                         <a href='#'>Vagas</a>
                         <a href='#'>Reservas</a>
                     </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import Logo from "../images/SmartPark-image-2.png";
-import '../styles/Perfil.css';
+import '../styles/Estacionamento.css';
 
 function CriarEstacionamento() {
     return (
@@ -29,7 +29,7 @@ function CriarEstacionamento() {
                         </div>
                     <div className='button-perfil'>
                         <button className='confirmar-perfil'>Salvar</button>
-                        <button className='editar-perfil'>Editar</button>
+                        <button className='editar-estacionamento'>Editar</button>
                     </div>
                     </div>
                 </div>
