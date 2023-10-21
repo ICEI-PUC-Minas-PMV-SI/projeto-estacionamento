@@ -1,16 +1,17 @@
-.containerVagas {
+/* .containerVagas {
   display: flex;
   height: 100vh;
   background-color: #D9D9D9;
   min-height: 100vh; 
-}
+} */
 
 .container-vagas {
   display: flex;
   background-color: #D9D9D9;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  flex: 1;
+  /* flex: 1; */
+  height: 100vh;
 }
 
 .sidebar {
@@ -64,11 +65,15 @@
   background-color: #FFFFFF;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  /* flex: 1; */
+  height: 100vh;
+  width: 100%;
 }
 
 .itens-vagas {
   background-color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
 }
 
 .titulo-vagas {
@@ -93,9 +98,9 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 50vh;
   margin: auto;
   justify-content: space-evenly;
+  min-width: 30%;
 }
 
 .formulario-criar-vaga .tipo-vaga {
@@ -134,11 +139,11 @@
   border-radius: 15px;
   margin-top: 50px;
   padding: 10px;
-  width: 90vh;
   display: flex;
   align-items: center;
   flex-direction: column;
   margin: 60px auto;
+  min-width: 70%;
 }
 
 .vaga {
@@ -147,6 +152,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-width: 70%;
 }
 
 .status-vaga {
