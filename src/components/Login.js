@@ -1,10 +1,35 @@
 import '../styles/Login.css';
-import React from 'react';
+import React, { useState } from 'react';
 import Logo from "../images/SmartPark-image-2.png"
 import Carros from "../images/CarrosEstacionados.avif"
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { auth } from '../services/firebaseConfig';
 
 
 function Login() {
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [
+    signInWithEmailAndPassword,
+    user,
+    loading,
+    error,
+  ] = useSignInWithEmailAndPassword(auth);
+
+  function handleSignOut(e){
+    e.preventDefault();
+    signInWithEmailAndPassword(email, password)
+  }
+
+  if(loading){
+    return <p>carregando...</p>;
+  }
+
+  if(user){
+    return console.log(user);
+  }
+
   return (
     <div className="container">
             
@@ -19,6 +44,7 @@ function Login() {
             name="nome"
             placeholder="Usuário(Email)"
             id="email"
+            onChange={(e) => setEmail(e.target.value)}
             
             ></input>
           
@@ -27,17 +53,13 @@ function Login() {
             name="senha"
             placeholder="Sua senha"
             id="senha"
+            onChange={(e) => setPassword(e.target.value)}
             
           ></input>
 
-          <input
-            type="button"
-            value="Entrar"
-            className="botao"
-            id="botao"
-            
-            
-          ></input>
+        <button onClick={handleSignOut} className="button">
+          Entrar
+        </button>
 
 <a href="">Esqueci a senha</a>
 

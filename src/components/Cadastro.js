@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Carros from '../images/FilaDeCarros.avif';
 import '../styles/Cadastro.css';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { auth } from '../services/firebaseConfig';
 
 function Cadastro() {
   const [opcao, setOpcao] = useState('cliente');
@@ -8,6 +10,26 @@ function Cadastro() {
   const handleOpcaoChange = (event) => {
     setOpcao(event.target.value);
   };
+
+    // Cadastro
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [
+    createUserWithEmailAndPassword,
+    user,
+    loading,
+    error,
+  ] = useCreateUserWithEmailAndPassword(auth);
+
+  function handleSignOut(e){
+    e.preventDefault();
+    createUserWithEmailAndPassword(email, password)
+  }
+
+  if(loading){
+    return <p>carregando...</p>;
+  }
+
 
   return (
     <div className="container">
@@ -50,12 +72,14 @@ function Cadastro() {
           type="text"
           name="email"
           placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
           name="senha"
           placeholder="Senha"
           id="senha"
+          onChange={(e) => setPassword(e.target.value)}
         />
         <input
           type="text"
@@ -85,12 +109,9 @@ function Cadastro() {
             />
           </>
         )}
-        <input
-          type="button"
-          value="Cadastrar"
-          className="botao"
-          id="botao"
-        />
+        <button onClick={handleSignOut} className="button">
+          Cadastrar
+        </button>
       </form>
     </div>
   );
