@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Carros from '../images/FilaDeCarros.avif';
 import '../styles/Cadastro.css';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { auth, db } from '../services/firebaseConfig';
-import { getFirestore } from 'firebase/firestore';
+import { auth } from '../services/firebaseConfig';
+import { getFirestore, doc, setDoc } from "firebase/firestore"; 
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 
 function Cadastro() {
@@ -14,47 +14,94 @@ function Cadastro() {
   };
 
     // Cadastro
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [nome, setNome] = useState("");
+  // const [telefone, setTelefone] = useState("");
+  // const [endereco, setEndereco] = useState("");
+  // const [placa, setPlaca] = useState("");
+  // const [modelo, setModelo] = useState("");
+  // const [users, setUsers] = useState([]);
+  
+
+
+  // const [
+  //   createUserWithEmailAndPassword,
+  //   user,
+  //   loading,
+  //   error,
+  // ] = useCreateUserWithEmailAndPassword(auth);
+
+  // function handleSignOut(e){
+  //   e.preventDefault();
+  //   createUserWithEmailAndPassword(email, password)
+  // .then((userCredential) => {
+  //   const user = userCredential.user;
+
+  //   return db.collection('users').doc(user.uid).set({
+  //     displayName: nome,
+  //     telefone: telefone,
+  //     endereco: endereco,
+  //     placa: placa,
+  //     nome: nome,
+  //     modelo: modelo,
+  //   });
+  // })
+  // .catch((error) => {
+  //   console.error("Erro: ", error);
+  // });
+  // }
+  
+  // if(loading){
+  //   return <p>carregando...</p>;
+  // }
+
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [endereco, setEndereco] = useState("");
-  const [placa, setPlaca] = useState("");
   const [modelo, setModelo] = useState("");
-  const [users, setUsers] = useState([]);
-  
+  const [placa, setPlaca] = useState("");
 
-
-  const [
-    createUserWithEmailAndPassword,
-    user,
-    loading,
-    error,
-  ] = useCreateUserWithEmailAndPassword(auth);
-
-  function handleSignOut(e){
+  const cadastro = async (e) => {
     e.preventDefault();
-    createUserWithEmailAndPassword(email, password)
-  .then((userCredential) => {
-    const user = userCredential.user;
-
-    return db.collection('users').doc(user.uid).set({
-      displayName: nome,
-      telefone: telefone,
-      endereco: endereco,
-      placa: placa,
-      nome: nome,
-      modelo: modelo,
-    });
-  })
-  .catch((error) => {
-    console.error("Erro: ", error);
-  });
-  }
   
-  if(loading){
-    return <p>carregando...</p>;
-  }
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
+      const user = userCredential.user;
+  
+      const db = getFirestore(); 
+  
+      const userRef = doc(db, 'users', user.uid);
+  
+      const userData = {
+        nome,
+        telefone,
+        endereco,
+        opcao,
+      };
+  
+      if (opcao === 'cliente') {
+        userData.modelo = modelo;
+        userData.placa = placa;
+      }
+  
+      await setDoc(userRef, userData);
+
+      setNome("");
+      setEmail("");
+      setSenha("");
+      setTelefone("");
+      setEndereco("");
+      setModelo("");
+      setPlaca("");
+  
+      console.log('User registered:', user);
+    } catch (error) {
+      console.error('Error registering user:', error);
+    }
+  };
 
 
   return (
@@ -93,12 +140,14 @@ function Cadastro() {
           name="nome"
           placeholder="Nome Completo"
           id="nome"
+          value={nome}
           onChange={(e) => setNome(e.target.value)}
         />
         <input
           type="text"
           name="email"
           placeholder="Email"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
@@ -106,13 +155,15 @@ function Cadastro() {
           name="senha"
           placeholder="Senha"
           id="senha"
-          onChange={(e) => setPassword(e.target.value)}
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
         />
         <input
           type="text"
           name="telefone"
           placeholder="Telefone"
           id="telefone"
+          value={telefone}
           onChange={(e) => setTelefone(e.target.value)}
         />
         <input
@@ -120,6 +171,7 @@ function Cadastro() {
           name="endereco"
           placeholder="Endereço"
           id="endereco"
+          value={endereco}
           onChange={(e) => setEndereco(e.target.value)}
         />
         {opcao === 'cliente' && (
@@ -129,6 +181,7 @@ function Cadastro() {
               name="modelo"
               placeholder="Modelo do Veículo"
               id="modelo"
+              value={modelo}
               onChange={(e) => setModelo(e.target.value)}
             />
             <input
@@ -136,11 +189,12 @@ function Cadastro() {
               name="placa"
               placeholder="Placa do Veículo"
               id="placa"
+              value={placa}
               onChange={(e) => setPlaca(e.target.value)}
             />
           </>
         )}
-        <button onClick={handleSignOut} className="button">
+        <button onClick={cadastro} className="button">
           Cadastrar
         </button>
       </form>
