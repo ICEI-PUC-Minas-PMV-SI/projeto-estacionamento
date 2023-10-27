@@ -82,6 +82,10 @@ function Login() {
   }, []);
 
 
+  function redirecionarParaCadastro() {
+    navigator('/cadastro'); // Redirecionamento para a página de cadastro
+  }
+
   return (
     <div className="container">
             
@@ -115,11 +119,12 @@ function Login() {
           Entrar
         </button>
 
-<a href="">Esqueci a senha</a>
+<a href="/redefinirsenha">Esqueci a senha</a>
 
 <p>Não possui conta?</p>
 
-<button id="meu-botao">Cadastrar</button>
+
+  <button onClick={redirecionarParaCadastro}>Cadastrar</button>
 
         </form>
     
