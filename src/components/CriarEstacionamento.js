@@ -1,15 +1,15 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import '../styles/Estacionamento.css';
 import Logo from "../images/SmartPark-image-2.png";
-import { getAuth, signOut } from 'firebase/auth';
+import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { getFirestore, doc, setDoc, updateDoc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, updateDoc, getDoc, onSnapshot } from 'firebase/firestore';
 
 
 export function CriarEstacionamento() {
     const navigator = useNavigate();
     const auth = getAuth();
-    const user = auth.currentUser;
+    const [user, setUser] = useState(auth.currentUser);
     const [nomeEstacionamento, setNomeEstacionamento] = useState('');
     const [enderecoEstacionamento, setEnderecoEstacionamento] = useState('');
     const [telefoneEstacionamento, setTelefoneEstacionamento] = useState('');
@@ -26,29 +26,43 @@ export function CriarEstacionamento() {
     };
 
     useEffect(() => {
-        if (user) {
-            const carregarDadosEstacionamento = async () => {
-                const db = getFirestore();
-                const estacionamentoRef = doc(db, 'estacionamento', user.uid);
-                const estacionamentoSnapshot = await getDoc(estacionamentoRef);
-                if (estacionamentoSnapshot.exists()) {
-                    const estacionamentoData = estacionamentoSnapshot.data();
-                    setNomeEstacionamento(estacionamentoData.nome);
-                    setEnderecoEstacionamento(estacionamentoData.endereco);
-                    setTelefoneEstacionamento(estacionamentoData.telefone);
-                }
-            };
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUser(user);
+                buscarDadosEstacionamento(user);
+            }
+        });
 
-            carregarDadosEstacionamento();
+        return () => unsubscribe();
+    }, [auth]);
+
+    const buscarDadosEstacionamento = (user) => {
+        if (user) {
+            const db = getFirestore();
+            const estacionamentoRef = doc(db, 'estacionamento', user.uid);
+            const unsubscribe = onSnapshot(estacionamentoRef, (docSnapshot) => {
+                if (docSnapshot.exists()) {
+                    const data = docSnapshot.data();
+                    setNomeEstacionamento(data.nome || '');
+                    setEnderecoEstacionamento(data.endereco || '');
+                    setTelefoneEstacionamento(data.telefone || '');
+                }
+            });
+
+            return () => unsubscribe();
         }
-    }, [user]);
+    };
 
     const handleCriarEstacionamento = async () => {
         if (user) {
             if (!user.modelo && !user.placa) {
-                try {
-                    const db = getFirestore();
-                    const estacionamentoRef = doc(db, 'estacionamento', user.uid); 
+                const db = getFirestore();
+                const estacionamentoRef = doc(db, 'estacionamento', user.uid);
+                const estacionamentoDoc = await getDoc(estacionamentoRef);
+
+                if (estacionamentoDoc.exists()) {
+                    console.log('Estacionamento já existe.');
+                } else {
                     const estacionamentoData = {
                         nome: nomeEstacionamento,
                         endereco: enderecoEstacionamento,
@@ -57,8 +71,6 @@ export function CriarEstacionamento() {
 
                     await setDoc(estacionamentoRef, estacionamentoData);
                     console.log('Estacionamento criado com sucesso.');
-                } catch (error) {
-                    console.error('Erro ao criar estacionamento:', error);
                 }
             } else {
                 console.log('Usuário não é proprietário.');
@@ -84,6 +96,7 @@ export function CriarEstacionamento() {
             }
         }
     };
+
     return (
         <div className='containerCriarEstacionamento'>
             <div className='container-estacionamento'>

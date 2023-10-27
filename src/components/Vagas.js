@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Vagas.css';
 import Logo from "../images/SmartPark-image-2.png";
-import { getAuth, signOut } from 'firebase/auth';
+import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { getFirestore, collection, getDocs, getDoc, doc, setDoc, onSnapshot } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, getDoc, doc, setDoc, onSnapshot, query } from 'firebase/firestore';
 
 function Vagas() {
     const navigator = useNavigate();
     const auth = getAuth();
-    const user = auth.currentUser;
     const [estacionamentoCriado, setEstacionamentoCriado] = useState(false);
-
+    const [user, setUser] = useState(auth.currentUser);
     const [vagas, setVagas] = useState([]);
     const [novaVaga, setNovaVaga] = useState({
         tipoDeVaga: '', 
@@ -27,64 +26,79 @@ function Vagas() {
     };
 
     useEffect(() => {
-        if (user) {
-          const db = getFirestore();
-          const vagasRef = collection(db, 'estacionamento', user.uid, 'vagas');
-    
-          getVagasFromFirestore(vagasRef);
-    
-          const estacionamentoRef = doc(db, 'estacionamento', user.uid);
-          onSnapshot(estacionamentoRef, (docSnapshot) => {
-            setEstacionamentoCriado(docSnapshot.exists());
-          });
-        }
-      }, [user]);
-    
-      const getVagasFromFirestore = async (vagasRef) => {
-        try {
-          const vagasSnapshot = await getDocs(vagasRef);
-          const vagasData = [];
-          vagasSnapshot.forEach((vagaDoc) => {
-            const vagaData = vagaDoc.data();
-            vagasData.push(vagaData);
-          });
-          setVagas(vagasData);
-        } catch (error) {
-          console.error('Erro ao buscar vagas:', error);
-        }
-      };
-    
-      const criarVaga = async () => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUser(user);
+                const uid = user.uid;
+
+                const db = getFirestore();
+                const vagasRef = collection(db, 'estacionamento', uid, 'vagas');
+
+                const unsubscribeVagas = onSnapshot(query(vagasRef), (querySnapshot) => {
+                    const vagasData = [];
+                    querySnapshot.forEach((vagaDoc) => {
+                        vagasData.push(vagaDoc.data());
+                    });
+                    setVagas(vagasData);
+                });
+
+                const estacionamentoRef = doc(db, 'estacionamento', uid);
+                getDoc(estacionamentoRef)
+                    .then((docSnapshot) => {
+                        setEstacionamentoCriado(docSnapshot.exists());
+                    })
+                    .catch((error) => {
+                        console.error('Erro ao acessar:', error);
+                    });
+                return () => {
+                    unsubscribeVagas();
+                };
+            } else {
+                console.log("Usuário não autenticado")
+            }
+        });
+
+        return () => unsubscribe();
+    }, [auth]);
+
+    const criarVaga = async () => {
         if (!estacionamentoCriado) {
-          alert('Você precisa criar um estacionamento primeiro.');
-          return;
+            alert('Você precisa criar um estacionamento primeiro.');
+            return;
         }
     
         if (!novaVaga.tipoDeVaga) {
-          alert('Por favor, selecione o tipo de vaga.');
-          return;
+            alert('Por favor, selecione o tipo de vaga.');
+            return;
         }
     
         const novaVagaData = {
-          tipo: novaVaga.tipoDeVaga,
-          status: 'Disponível',
+            tipo: novaVaga.tipoDeVaga,
+            status: 'Disponível',
         };
     
         if (user) {
-          const db = getFirestore();
-          const vagasRef = collection(db, 'estacionamento', user.uid, 'vagas');
+            const db = getFirestore();
+            const vagasRef = collection(db, 'estacionamento', user.uid, 'vagas');
     
-          try {
-            await setDoc(doc(vagasRef), novaVagaData);
-            setVagas((prevVagas) => [...prevVagas, novaVagaData]);
-          } catch (error) {
-            console.error('Erro ao criar vaga:', error);
-          }
+            try {
+                await setDoc(doc(vagasRef), novaVagaData);
+
+                const vagasSnapshot = await getDocs(vagasRef);
+                const vagasData = [];
+                vagasSnapshot.forEach((vagaDoc) => {
+                    const vagaData = vagaDoc.data();
+                    vagasData.push(vagaData);
+                });
+                setVagas(vagasData);
+            } catch (error) {
+                console.error('Erro ao criar vaga:', error);
+            }
         }
         setNovaVaga({
-          tipoDeVaga: '',
+            tipoDeVaga: '',
         });
-      };
+    };
 
     return (
         <div className='containerVagas'>
