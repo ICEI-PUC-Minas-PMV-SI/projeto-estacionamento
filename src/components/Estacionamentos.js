@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/Estacionamentos.css";
 import Logo from "../images/SmartPark-image-2.png";
+import PerfilEstacionamento from "../images/PerfilEstacionamento.jpeg";
 import { getAuth, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,7 +30,9 @@ function Estacionamentos() {
             <a href="#">Reservas</a>
           </div>
           <div className="logout">
-            <a href="#" onClick={signOutUser}>Sair</a>
+            <a href="#" onClick={signOutUser}>
+              Sair
+            </a>
           </div>
         </div>
         <div className="segundoContainerEstacionamentos">
@@ -37,11 +40,33 @@ function Estacionamentos() {
 
           <div className="flutuantesEstacionamentos">
             <div className="flutuanteEstacionamento1">
-                <p></p>
+              <img
+                className="PerfilEstacionamento"
+                src={PerfilEstacionamento}
+                alt="Logo"
+              />
+              <h3 className="EstacionamentoNome">Estapar Centro</h3>
+              <p className="EstacionamentoEndereco">
+                Rua Rio de Janeiro, 789, Centro, Belo Horizonte-MG
+              </p>
+              <p className="EstacionamentoTelefone">(31)3000-0000</p>
+              <p className="VagasComum">Vagas Comum:</p>
+              <p className="VagasPCD">Vagas para PCD:</p>
+              <p className="VagasCargo">Vagas Carga/Descarga:</p>
+
+              <div className="TipoVaga">
+                <h3 className="TituloTipoVaga">Tipo de Vaga</h3>
+                <p className="VagasComum2">Comum</p>
+                <p className="VagasPCD2">PCD</p>
+                <p className="VagasCargo2">Carga/Descarga</p>
+              </div>
+              
+                <button className="Reservar">Reservar</button>
+              
             </div>
 
             <div className="flutuanteEstacionamento2">
-                <p></p>
+              <p></p>
             </div>
           </div>
         </div>
