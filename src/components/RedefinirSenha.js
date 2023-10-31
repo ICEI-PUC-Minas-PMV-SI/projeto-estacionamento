@@ -1,46 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/RedefinirSenha.css';
-import Carros from "../images/FilaDeCarros2.jpg"
-import Logo from "../images/SmartPark-image-2.png"
+import Carros from "../images/FilaDeCarros2.jpg";
+import Logo from "../images/SmartPark-image-2.png";
+import { auth } from '../services/firebaseConfig';
+import { sendPasswordResetEmail } from 'firebase/auth';
 
 function RedefinirSenha() {
-    return (
+  const [email, setEmail] = useState('');
 
-      <div className="container">
-            
+  const handleResetPassword = () => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        alert('Email de recuperação enviado com sucesso!');
+      })
+      .catch(error => {
+        alert('Usuário ainda não cadastrado no sistema');
+      });
+  };
+
+  return (
+    <div className="container">
       <img className="imagemCarros2" src={Carros} alt="Logo" />
       <form className="redefinir">
-      <img className="imagemLogo" src={Logo} alt="Logo" />
-      <div className="tituloRedefinir" >Redefinir Senha</div>
-
-      <div className="tituloRedefinir2" >Digite seu email</div>
-      
-
+        <img className="imagemLogo" src={Logo} alt="Logo" />
+        <div className="tituloRedefinir">Redefinir Senha</div>
+        <div className="tituloRedefinir2">Digite seu email</div>
         <input
           type="text"
           name="nome"
           placeholder="Usuário(Email)"
-          id="email"
-          
-          ></input>
-        
-
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <input
           type="button"
           value="Enviar"
           className="botao"
-          id="botao"
-          
-          
-        ></input>
-
-
-
+          onClick={handleResetPassword}
+        />
       </form>
-  
-  </div>
-     
-    );
-  }
+    </div>
+  );
+}
 
-  export default RedefinirSenha;
+export default RedefinirSenha;
