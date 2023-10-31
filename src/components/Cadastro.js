@@ -13,49 +13,6 @@ function Cadastro() {
     setOpcao(event.target.value);
   };
 
-    // Cadastro
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [nome, setNome] = useState("");
-  // const [telefone, setTelefone] = useState("");
-  // const [endereco, setEndereco] = useState("");
-  // const [placa, setPlaca] = useState("");
-  // const [modelo, setModelo] = useState("");
-  // const [users, setUsers] = useState([]);
-  
-
-
-  // const [
-  //   createUserWithEmailAndPassword,
-  //   user,
-  //   loading,
-  //   error,
-  // ] = useCreateUserWithEmailAndPassword(auth);
-
-  // function handleSignOut(e){
-  //   e.preventDefault();
-  //   createUserWithEmailAndPassword(email, password)
-  // .then((userCredential) => {
-  //   const user = userCredential.user;
-
-  //   return db.collection('users').doc(user.uid).set({
-  //     displayName: nome,
-  //     telefone: telefone,
-  //     endereco: endereco,
-  //     placa: placa,
-  //     nome: nome,
-  //     modelo: modelo,
-  //   });
-  // })
-  // .catch((error) => {
-  //   console.error("Erro: ", error);
-  // });
-  // }
-  
-  // if(loading){
-  //   return <p>carregando...</p>;
-  // }
-
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
