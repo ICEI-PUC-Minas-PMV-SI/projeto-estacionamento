@@ -3,7 +3,7 @@ import '../styles/Vagas.css';
 import Logo from "../images/SmartPark-image-2.png";
 import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { getFirestore, collection, getDocs, getDoc, doc, setDoc, onSnapshot, query } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, getDoc, doc, setDoc, onSnapshot, query, deleteDoc } from 'firebase/firestore';
 
 function Vagas() {
     const navigator = useNavigate();
@@ -12,7 +12,7 @@ function Vagas() {
     const [user, setUser] = useState(auth.currentUser);
     const [vagas, setVagas] = useState([]);
     const [novaVaga, setNovaVaga] = useState({
-        tipoDeVaga: '', 
+        tipoDeVaga: 'Comum', 
     });
 
     const signOutUser = () => {
@@ -37,7 +37,7 @@ function Vagas() {
                 const unsubscribeVagas = onSnapshot(query(vagasRef), (querySnapshot) => {
                     const vagasData = [];
                     querySnapshot.forEach((vagaDoc) => {
-                        vagasData.push(vagaDoc.data());
+                        vagasData.push({ id: vagaDoc.id, ...vagaDoc.data() });
                     });
                     setVagas(vagasData);
                 });
@@ -87,7 +87,7 @@ function Vagas() {
                 const vagasSnapshot = await getDocs(vagasRef);
                 const vagasData = [];
                 vagasSnapshot.forEach((vagaDoc) => {
-                    const vagaData = vagaDoc.data();
+                    const vagaData = { id: vagaDoc.id, ...vagaDoc.data() };
                     vagasData.push(vagaData);
                 });
                 setVagas(vagasData);
@@ -98,6 +98,36 @@ function Vagas() {
         setNovaVaga({
             tipoDeVaga: '',
         });
+    };
+
+    
+    const excluirVaga = async (vagaId) => {
+        console.log('vagaId:', vagaId);
+    
+        if (!vagaId) {
+            console.error('Erro: vagaId está faltando');
+            return;
+        }
+    
+        try {
+            const db = getFirestore();
+            const vagaRef = doc(db, 'estacionamento', user.uid, 'vagas', vagaId);
+            
+            const vagaDoc = await getDoc(vagaRef);
+            if (vagaDoc.exists()) {
+                const vagaData = vagaDoc.data();
+    
+                if (vagaData.status === 'Ocupada') {
+                    alert('Erro: Não é possível excluir uma vaga ocupada');
+                    return;
+                }
+            }
+    
+            await deleteDoc(vagaRef);
+            alert('Vaga excluída com sucesso');
+        } catch (error) {
+            console.error('Erro ao excluir a vaga:', error);
+        }
     };
 
     return (
@@ -142,7 +172,7 @@ function Vagas() {
                                     <span className="tipo">{vaga.tipo}</span>
                                 </div>
                                 <div className="excluir-vaga">
-                                    <span className="excluir">&times;</span>
+                                    <span  onClick={() => excluirVaga(vaga.id)} className="excluir">&times;</span>
                                 </div>
                                 </div>
                             ))}

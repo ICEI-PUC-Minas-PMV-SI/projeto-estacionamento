@@ -13,6 +13,7 @@ export function CriarEstacionamento() {
     const [nomeEstacionamento, setNomeEstacionamento] = useState('');
     const [enderecoEstacionamento, setEnderecoEstacionamento] = useState('');
     const [telefoneEstacionamento, setTelefoneEstacionamento] = useState('');
+    const [imagemEstacionamento, setImagemEstacionamento] = useState('');
 
     const signOutUser = () => {
         const auth = getAuth();
@@ -46,6 +47,7 @@ export function CriarEstacionamento() {
                     setNomeEstacionamento(data.nome || '');
                     setEnderecoEstacionamento(data.endereco || '');
                     setTelefoneEstacionamento(data.telefone || '');
+                    setImagemEstacionamento(data.imagem || '');
                 }
             });
 
@@ -67,6 +69,7 @@ export function CriarEstacionamento() {
                         nome: nomeEstacionamento,
                         endereco: enderecoEstacionamento,
                         telefone: telefoneEstacionamento,
+                        imagem: imagemEstacionamento
                     };
 
                     await setDoc(estacionamentoRef, estacionamentoData);
@@ -86,6 +89,7 @@ export function CriarEstacionamento() {
                 nome: nomeEstacionamento,
                 endereco: enderecoEstacionamento,
                 telefone: telefoneEstacionamento,
+                imagem: imagemEstacionamento
             };
 
             try {
@@ -117,6 +121,12 @@ export function CriarEstacionamento() {
                     <div className='form-perfil'>
                         <label className='subtitulo-perfil'>Cadastre seu estacionamento: </label>
                         <div className='info-perfil'>
+                            <input 
+                            className='nome-perfil' 
+                            placeholder='Imagem do Estacionamento'
+                            value={imagemEstacionamento}
+                            onChange={(e) => setImagemEstacionamento(e.target.value)}
+                            ></input>
                             <input
                                 value={nomeEstacionamento}
                                 onChange={(e) => setNomeEstacionamento(e.target.value)}
