@@ -56,9 +56,9 @@ function Estacionamentos() {
 
               <div className="TipoVaga">
                 <h3 className="TituloTipoVaga">Tipo de Vaga</h3>
-                <p className="VagasComum2">Comum</p>
-                <p className="VagasPCD2">PCD</p>
-                <p className="VagasCargo2">Carga/Descarga</p>
+                <button className="VagasComum2">Comum</button>
+                <button className="VagasPCD2">PCD</button>
+                <button className="VagasCargo2">Carga/Descarga</button>
               </div>
               
                 <button className="Reservar">Reservar</button>
