@@ -14,6 +14,25 @@ function Estacionamentos() {
   const [tipoVagaEscolhido, setTipoVagaEscolhido] = useState({});
   const [reservaFeita, setReservaFeita] = useState(false);
   const user = auth.currentUser;
+  const [comum, setComum] = useState(false);
+  const [pcd, setPcd] = useState(false);
+  const [cargaDescarga, setCargaDescarga] = useState(false);
+  const allUnchecked = !comum && !pcd && !cargaDescarga;
+  const [searchValue, setSearchValue] = useState('');
+  
+  const estacionamentoRefs = estacionamentos.reduce((acc, value) => {
+    acc[value.id] = React.createRef();
+    return acc;
+  }, {});
+  
+  const filteredEstacionamentos = estacionamentos.filter(estacionamento =>
+    (estacionamento.nome.toLowerCase().includes(searchValue.toLowerCase()) ||
+    estacionamento.endereco.toLowerCase().includes(searchValue.toLowerCase())) &&
+    (allUnchecked ||
+    (comum && estacionamento.vagasDisponiveisPorTipo['Comum'] > 0) ||
+    (pcd && estacionamento.vagasDisponiveisPorTipo['PcD'] > 0) ||
+    (cargaDescarga && estacionamento.vagasDisponiveisPorTipo['Carga/Descarga'] > 0))
+  );
 
   const handleTipoVagaChange = (estacionamentoId, tipo) => {
     setTipoVagaEscolhido(prevState => ({
@@ -96,7 +115,15 @@ const fazerReserva = async (userId, tipoVagaEscolhido, user) => {
     const vagasSnapshot = await getDocs(vagasQuery);
 
     if (vagasSnapshot.empty) {
-      alert('Não há vagas disponíveis desse tipo no estacionamento selecionado.');
+      const estacionamentosComVagaDisponivel = estacionamentos
+        .filter(estacionamento => estacionamento.vagasDisponiveisPorTipo[tipoVagaEscolhido] > 0)
+        .map(estacionamento => estacionamento.nome);
+
+      if (estacionamentosComVagaDisponivel.length > 0) {
+        alert(`Não há vagas disponíveis desse tipo no estacionamento selecionado. Estacionamentos com vaga disponível: ${estacionamentosComVagaDisponivel.join(', ')}.`);
+      } else {
+        alert('Não há vagas disponíveis desse tipo em nenhum estacionamento.');
+      }
       return;
     }
 
@@ -165,46 +192,43 @@ const fazerReserva = async (userId, tipoVagaEscolhido, user) => {
               Sair
             </a>
           </div>
-        </div>
+        </div>   
         <div className="segundoContainerEstacionamentos">
           <h1 className="primeiroTituloEstacionamentos">Estacionamentos</h1>
-
-          <div className="flutuantesEstacionamentos">
-          {estacionamentos.map((estacionamento) => (
-              <div className="flutuanteEstacionamento1" key={estacionamento.id}>
-                <img
-                className="PerfilEstacionamento"
-                src={estacionamento.imagem}
-                alt="Logo"
-              />
-                <h3 className="EstacionamentoNome">{estacionamento.nome}</h3>
-                <p className="EstacionamentoEndereco">
-                  {estacionamento.endereco}
-                </p>
+          <input className="pesquisa"
+            type="text"
+            value={searchValue}
+            onChange={e => setSearchValue(e.target.value)}
+            placeholder="Pesquisar estacionamentos... 🔍"
+          />
+          <div className="buscarTipo">
+          <p className="selecionarTipo">Selecione os tipos de vagas que você está procurando:</p>
+          <input type="checkbox" checked={comum} onChange={e => setComum(e.target.checked)} /> 
+          <span className="buscaBox">Comum</span>
+          <input type="checkbox" checked={pcd} onChange={e => setPcd(e.target.checked)} /> 
+          <span className="buscaBox">Pcd</span>
+          <input type="checkbox" checked={cargaDescarga} onChange={e => setCargaDescarga(e.target.checked)} />
+          <span className="buscaBox">Carga/Descarga</span>
+          </div>
+           <div className="flutuantesEstacionamentos">
+            {filteredEstacionamentos.map(estacionamento => (
+              <div className="flutuanteEstacionamento1" key={estacionamento.id} ref={estacionamentoRefs[estacionamento.id]}>
+                <img className="PerfilEstacionamento"  src={estacionamento.imagem}></img>
+                <p className="EstacionamentoNome">{estacionamento.nome}</p>
+                <p className="EstacionamentoEndereco">{estacionamento.endereco}</p>
                 <p className="EstacionamentoTelefone">{estacionamento.telefone}</p>
-                <p className="VagasComum">Vagas Comum: {estacionamento.vagasDisponiveisPorTipo.Comum}</p>
-                <p className="VagasPCD">Vagas para PCD: {estacionamento.vagasDisponiveisPorTipo.PcD}</p>
-                <p className="VagasCargo">Vagas Carga/Descarga:  {estacionamento.vagasDisponiveisPorTipo['Carga/Descarga']}</p>
+                <p className="VagasComum">Vagas Comuns: {estacionamento.vagasDisponiveisPorTipo.Comum}</p>
+                <p className="VagasPCD">Vagas PcD:{estacionamento.vagasDisponiveisPorTipo.PcD}</p>
+                <p className="VagasCargo">Vagas Carga/Descarga:{estacionamento.vagasDisponiveisPorTipo['Carga/Descarga']}</p>
                 <div className="TipoVaga">
                   <h3 className="TituloTipoVaga">Tipo de Vaga</h3>
-                  <select
-                    className="selectTipoVaga"
-                    value={tipoVagaEscolhido[estacionamento.id] || "Comum"}
-                    onChange={(e) =>
-                      handleTipoVagaChange(estacionamento.id, e.target.value)
-                    }
-                  >
+                  <select className="selectTipoVaga" value={tipoVagaEscolhido[estacionamento.id] || 'Comum'} onChange={(e) => handleTipoVagaChange(estacionamento.id, e.target.value)}>
                     <option value="Comum">Comum</option>
-                    <option value="Pcd">PCD</option>
+                    <option value="PcD">PcD</option>
                     <option value="Carga/Descarga">Carga/Descarga</option>
                   </select>
                 </div>
-                <button
-                  className="Reservar"
-                  onClick={() =>
-                    fazerReserva(estacionamento.id, tipoVagaEscolhido[estacionamento.id]|| 'Comum', user)
-                  }
-                >
+                <button className="Reservar" onClick={() => fazerReserva(estacionamento.id, tipoVagaEscolhido[estacionamento.id] || 'Comum', user)}>
                   Reservar
                 </button>
               </div>
