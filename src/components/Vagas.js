@@ -3,7 +3,7 @@ import '../styles/Vagas.css';
 import Logo from "../images/SmartPark-image-2.png";
 import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { getFirestore, collection, getDocs, getDoc, doc, setDoc, onSnapshot, query, deleteDoc } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, getDoc, doc, setDoc, onSnapshot, query, deleteDoc, orderBy, serverTimestamp } from 'firebase/firestore';
 
 function Vagas() {
     const navigator = useNavigate();
@@ -32,7 +32,7 @@ function Vagas() {
                 const uid = user.uid;
 
                 const db = getFirestore();
-                const vagasRef = collection(db, 'estacionamento', uid, 'vagas');
+                const vagasRef = query(collection(db, 'estacionamento', uid, 'vagas'), orderBy('criadoEm', 'desc'));
 
                 const unsubscribeVagas = onSnapshot(query(vagasRef), (querySnapshot) => {
                     const vagasData = [];
@@ -75,6 +75,7 @@ function Vagas() {
         const novaVagaData = {
             tipo: novaVaga.tipoDeVaga,
             status: 'Disponível',
+            criadoEm: serverTimestamp(),
         };
     
         if (user) {
@@ -84,7 +85,7 @@ function Vagas() {
             try {
                 await setDoc(doc(vagasRef), novaVagaData);
 
-                const vagasSnapshot = await getDocs(vagasRef);
+                const vagasSnapshot = await getDocs(query(vagasRef, orderBy('criadoEm', 'desc')));
                 const vagasData = [];
                 vagasSnapshot.forEach((vagaDoc) => {
                     const vagaData = { id: vagaDoc.id, ...vagaDoc.data() };
@@ -96,7 +97,7 @@ function Vagas() {
             }
         }
         setNovaVaga({
-            tipoDeVaga: '',
+            tipoDeVaga: 'Comum',
         });
     };
 
@@ -152,7 +153,8 @@ function Vagas() {
                         <div className='formulario-criar-vaga'>
                             <label className='tipo-vaga'>Tipo de Vaga:</label>
                             <select 
-                            onChange={(event) => setNovaVaga({ tipoDeVaga: event.target.value })}
+                            value={novaVaga ? novaVaga.tipoDeVaga : 'Comum'} 
+                            onChange={(event) => setNovaVaga(prevState => ({ ...prevState, tipoDeVaga: event.target.value }))}
                             id='tipo-vaga' name='tipo-vaga' className='select-vaga'>
                                 <option value='Comum'>Comum</option>
                                 <option value='PcD'>PcD</option>
@@ -161,7 +163,7 @@ function Vagas() {
                             <button onClick={criarVaga} className='botao-criar-vaga'>Criar</button>
                         </div> 
                         <div className='lista-vagas'>
-                            {vagas.map((vaga, index) => (
+                            {vagas && vagas.map((vaga, index) => (
                                 <div className="vaga" key={index}>
                                 <span className="status-label">Status:</span>
                                 <div className="status-vaga">
