@@ -4,14 +4,26 @@ import '../styles/Cadastro.css';
 import { auth } from '../services/firebaseConfig';
 import { getFirestore, doc, setDoc } from "firebase/firestore"; 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import Modal from './Modal';
 
 
 function Cadastro() {
   const [opcao, setOpcao] = useState('cliente');
+  const [termosAceitos, setTermosAceitos] = useState(false);
 
   const handleOpcaoChange = (event) => {
     setOpcao(event.target.value);
   };
+
+  const [modalOpen, setModalOpen] = useState(false);
+
+    const openModal = () => {
+      setModalOpen(true);
+    };
+
+    const closeModal = () => {
+      setModalOpen(false);
+    };
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -23,6 +35,11 @@ function Cadastro() {
 
   const cadastro = async (e) => {
     e.preventDefault();
+
+    if (!termosAceitos) {
+    alert('Por favor, aceite os Termos e Condições para se registrar.');
+    return; 
+    }
   
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
@@ -151,10 +168,35 @@ function Cadastro() {
             />
           </>
         )}
+        <label htmlFor="termos" className="termos">
+        <input
+            type="checkbox"
+            id="termos"
+            name="termos"
+            required
+            className="termos-input"
+            onChange={e => setTermosAceitos(e.target.checked)}
+          />
+          <span className="texto-termos" >
+            Eu aceito os 
+            <a  className="termos-link" href="#" onClick={openModal}> Termos e Condições</a>
+            </span>
+          </label>
         <button onClick={cadastro} className="button">
           Cadastrar
         </button>
       </form>
+      <Modal isOpen={modalOpen} close={closeModal}>
+        <h2>Termos e Condições</h2>
+        <ul>
+        Ao prosseguir com o cadastro, você concorda com o tratamento de seus dados pessoais conforme descrito nesta política de privacidade, em conformidade com a Lei Geral de Proteção de Dados Pessoais (LGPD), Lei nº 13.709/2018.</ul>
+        <ul><strong>Coleta de Dados:</strong> Nós coletamos informações necessárias exclusivamente para o cadastro e utilização dos serviços oferecidos. Isso inclui, mas não se limita a, nome, endereço de e-mail e informações de contato.</ul>
+        <ul><strong>Uso de Dados: </strong> Seus dados serão utilizados para possibilitar o acesso aos nossos serviços, comunicação e melhorias contínuas da plataforma.</ul>
+        <ul><strong>Compartilhamento de Dados: </strong> Não compartilhamos suas informações com terceiros, exceto quando necessário para a prestação dos serviços contratados ou por exigência legal.</ul>
+        <ul><strong>Direitos do Usuário: </strong> Você tem o direito de acessar, corrigir, excluir ou limitar o tratamento de seus dados pessoais. Para exercer esses direitos, entre em contato conosco através dos canais de atendimento disponíveis.</ul>
+        <ul><strong>Consentimento: </strong> Ao marcar esta opção, você declara que leu e concorda com os termos aqui apresentados.</ul>
+        <button onClick={closeModal}>Fechar</button>
+      </Modal>
     </div>
   );
 }
