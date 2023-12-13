@@ -23,9 +23,7 @@ function App() {
         <ReactRoute path="/cadastro" element={<Cadastro />} />
         <ReactRoute path="/vagas" element={<Vagas />} />
         <ReactRoute path="/estacionamentos" element={<Estacionamentos />} />
-        <ReactRoute
-          path="/reservas-proprietario"
-          element={<ReservasProprietario />} />
+        <ReactRoute path="/reservas-proprietario" element={<ReservasProprietario />} />
         <ReactRoute path="/reservas-cliente" element={<ReservasCliente />} />
         <ReactRoute path="/estacionamento" element={<CriarEstacionamento />} />
         <ReactRoute path="/perfil" element={<Perfil />} />
